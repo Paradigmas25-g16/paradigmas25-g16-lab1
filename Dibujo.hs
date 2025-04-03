@@ -1,8 +1,19 @@
 module Dibujo where
 
 -- Definir el lenguaje via constructores de tipo
-data Dibujo a =
+data Dibujo a = Basica a
+              | Rotar (Dibujo a)
+              | Rotar45 (Dibujo a)
+              | Espejar (Dibujo a)
+              | Apilar Float Float (Dibujo a) (Dibujo a)
+              | Juntar Float Float (Dibujo a) (Dibujo a)
+              | Encimar (Dibujo a) (Dibujo a)
+                     deriving (Eq, Show) 
 
+data FigBasicas = Rectangulo
+                 | Triangulo
+                 | Circulo
+                 deriving (Eq, Show)
 
 -- Composición n-veces de una función con sí misma.
 comp :: (a -> a) -> Int -> a -> a
