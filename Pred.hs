@@ -1,5 +1,3 @@
-module Dibujo where
-
 import Dibujo
 
 type Pred a = a -> Bool

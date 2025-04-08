@@ -1,6 +1,6 @@
 -- Sacar del esqueleto final!
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}       --delete this
-{-# HLINT ignore "Use camelCase" #-}                --delete this
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use camelCase" #-}
 module Interp where
 import Graphics.Gloss
 import Graphics.Gloss.Data.Vector
@@ -31,12 +31,16 @@ interp_rotar45 :: ImagenFlotante -> ImagenFlotante
 interp_rotar45 img vi vj vk = Graphics.Gloss.rotate 45 (img vi vj vk)
 
 --interpreta el operador de apilar
-interp_apilar :: Float -> Float -> ImagenFlotante -> ImagenFlotante -> ImagenFlotante
-interp_apilar n m img1 img2 vi vj vk = pictures [img1 vi (mitad vj) vk, img2 (vi V.+ mitad vj) vj vk]
+interp_apilar :: Float -> Float ->
+                 ImagenFlotante -> ImagenFlotante -> ImagenFlotante
+interp_apilar n m img1 img2 vi vj vk =
+    pictures [img1 vi (mitad vj) vk, img2 (vi V.+ mitad vj) vj vk]
 
 --interpreta el operador de juntar
-interp_juntar :: Float -> Float -> ImagenFlotante -> ImagenFlotante -> ImagenFlotante
-interp_juntar n m img1 img2 vi vj vk = pictures [img1 vi (mitad vj) vk, img2 (vi V.+ mitad vj) (mitad vj) vk]
+interp_juntar :: Float -> Float ->
+                 ImagenFlotante -> ImagenFlotante -> ImagenFlotante
+interp_juntar n m img1 img2 vi vj vk =
+    pictures [img1 vi (mitad vj) vk, img2 (vi V.+ mitad vj) (mitad vj) vk]
 
 --interpreta el operador de encimar
 interp_encimar :: ImagenFlotante -> ImagenFlotante -> ImagenFlotante
@@ -45,11 +49,11 @@ interp_encimar img1 img2 vi vj vk = pictures [img1 vi vj vk, img2 vi vj vk]
 --interpreta cualquier expresion del tipo Dibujo a
 --utilizar foldDib 
 interp :: Interpretacion a -> Dibujo a -> ImagenFlotante
-interp f (Basica x) = f x
-interp f (Rotar d) = interp_rotar (interp f d)
-interp f (Rotar45 d) = interp_rotar45 (interp f d)
-interp f (Espejar d) = interp_espejar (interp f d)
-interp f (Apilar n m d1 d2) = interp_apilar n m (interp f d1) (interp f d2)
-interp f (Juntar n m d1 d2) = interp_juntar n m (interp f d1) (interp f d2)
-interp f (Encimar d1 d2) = interp_encimar (interp f d1) (interp f d2)
+interp f = foldDib f
+                    interp_rotar
+                    interp_rotar45
+                    interp_espejar
+                    interp_apilar
+                    interp_juntar
+                    interp_encimar
 
