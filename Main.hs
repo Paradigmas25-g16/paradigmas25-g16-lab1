@@ -5,6 +5,7 @@ import Graphics.UI.GLUT.Begin
 import Dibujo
 import Interp
 import qualified Basica.Ejemplo as E
+import qualified Basica.Escher as J
 import qualified Graphics.Gloss.Data.Point.Arithmetic as V
 
 --Funciones para rellenar el fondo de la imagen inicial
@@ -31,30 +32,27 @@ data Conf a = Conf {
   , r :: Picture -> Picture  -- Reposicionar figura
   }
 
-ej ancho alto = Conf {
-                basic = E.interpBas
-              , fig = E.ejemplo
+ejEscherTriangulo ancho alto = Conf {
+                basic = J.interpBasEsch
+              , fig = J.escher 10 J.Triangulo
               , width = ancho
               , height = alto
               , r = id
               }
 
-moverCentro :: Float -> Float -> Picture -> Picture
-moverCentro ancho alto p = translate (-ancho / 2) (-alto / 2) p
-
-ejCentro ancho alto = Conf {
-                basic = E.interpBas
-              , fig = E.ejemplo
+ejEscherFish ancho alto = Conf {
+                basic = J.interpBasEsch
+              , fig = J.escher 10 J.Fish
               , width = ancho
               , height = alto
-              , r = moverCentro ancho alto
+              , r = id
               }
 
 -- Dada una computación que construye una configuración, mostramos por
 -- pantalla la figura de la misma de acuerdo a la interpretación para
 -- las figuras básicas. Permitimos una computación para poder leer
 -- archivos, tomar argumentos, etc.
-inicial :: IO (Conf E.Basica) -> IO ()
+inicial :: IO (Conf J.Escher) -> IO ()
 inicial cf = cf >>= \cfg ->
     let ancho  = (width cfg, 0)
         alto  = (0, height cfg)
@@ -65,4 +63,4 @@ inicial cf = cf >>= \cfg ->
         grey = makeColorI 120 120 120 120
 
 win = InWindow "Paradigmas 2025 - Lab1" (500, 500) (0, 0)
-main = inicial $ return (ej 100 100)
+main = inicial $ return (ejEscherTriangulo 100 100)
