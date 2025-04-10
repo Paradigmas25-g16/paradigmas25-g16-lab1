@@ -24,7 +24,7 @@ plot d w h ps = line $ map (\(x, y) -> d V.+ (x V.* w) V.+ (y V.* h)) ps
 
 interpBasEsch :: Escher -> ImagenFlotante
 interpBasEsch Vacio _ _ _ = Graphics.Gloss.Blank
-interpBasEsch Triangulo d w h = plot d w h [(0, 0), (1, 0), (0, 1), (0, 0)]
+interpBasEsch Basica.Escher.Triangulo d w h = plot d w h [(0, 0), (1, 0), (0, 1), (0, 0)]
 interpBasEsch Fish d w h =
   pictures
     [ color naranjaOsc $ plotPolygon d w h [(0.3, 0.518), (0.376, 0.376), (0.5, 0.5), (0.5, 0.748), (0.372, 0.783), (0.191, 0.794)],
